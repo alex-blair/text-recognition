@@ -1,0 +1,26 @@
+{
+  "name": "text-recognition",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "16.6.3",
+    "react-native": "0.57.8"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.8",
+    "@types/react-native": "^0.57.41",
+    "babel-jest": "24.5.0",
+    "jest": "24.5.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-native-typescript-transformer": "^1.2.12",
+    "react-test-renderer": "16.8.5",
+    "typescript": "^3.3.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
