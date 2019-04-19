@@ -1,55 +1,40 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 // import {Platform, StyleSheet, Text, View} from 'react-native';
 // import Header from './src/Header';
 import { StyleSheet, Text, TouchableOpacity, View, Slider } from 'react-native';
-import { RNCamera } from 'react-native-camera';
-
-// const instructions = Platform.select({
-//   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-//   android:
-//     'Double tap R on your keyboard to reload,\n' +
-//     'Shake or press menu button for dev menu',
-// });
+import { RNCamera, TrackedTextFeature } from 'react-native-camera';
 
 type Props = {};
 
 interface State {
   canDetectText: boolean;
-  textBlocks: string[],
+  textBlocks: TrackedTextFeature[];
   analyseText: boolean;
 }
-export default class App extends Component<Props> {
-  public camera: RNCamera;
 
-  state = {
+export default class App extends Component<Props, State> {
+  public camera: any;
+
+  state: State = {
     canDetectText: false,
     textBlocks: [],
     analyseText: false,
   };
 
-  // private camera?: RNCamera | null;
   render() {
-    console.log('###', this.state.textBlocks)
-    console.log('### Made it to intial render')
     return (
-    <View style={styles.container}>{this.state.analyseText ? this.renderPhotoWithText() : this.renderCamera()}</View>
+      <View style={styles.container}>
+        {this.state.analyseText ? this.renderPhotoWithText() : this.renderCamera()}
+      </View>
     );
   }
 
-  private takePicture = async function() {
+  private takePicture = async () => {
     if (this.camera) {
-      this.setState({analyseText: true})
+      this.setState({ analyseText: true });
       const options = { quality: 0.5, base64: true };
       const data = await this.camera.takePictureAsync(options);
-      console.log('### Photo', data.uri);
+      // console.log('### Photo', data.uri);
     }
   };
 
@@ -58,10 +43,13 @@ export default class App extends Component<Props> {
       <View style={styles.textContainer} pointerEvents="none">
         {this.state.textBlocks.map(this.renderTextBlock)}
       </View>
-    )
-  }
+    );
+  };
 
-  private renderTextBlock = ({ bounds, value } : {bounds: any, value: any}) => (
+  private renderTextBlock = (textBlock: TrackedTextFeature) => {
+    const { value, bounds } = textBlock;
+    return (
+
     <React.Fragment key={value + bounds.origin.x}>
       <Text style={[styles.textBlock, { left: bounds.origin.x, top: bounds.origin.y }]}>
         {value}
@@ -77,18 +65,19 @@ export default class App extends Component<Props> {
         ]}
       />
     </React.Fragment>
-  );
+    )
+  }
 
-  private textRecognized = (object: any) => {
-    if(this.state.analyseText) {
+  private textRecognized = (response: { textBlocks: TrackedTextFeature[] }) => {
+    if (this.state.analyseText) {
       return;
     }
-    const { textBlocks } = object;
+    const { textBlocks } = response;
     this.setState({ textBlocks });
   };
 
-
-  private toggle = (value: any) => () => this.setState(prevState => ({ [value]: !prevState[value]}));
+  private toggleCanDetectText = () =>
+    this.setState(prevState => ({ canDetectText: !prevState.canDetectText }));
 
   private renderCamera = () => {
     const { canDetectText } = this.state;
@@ -126,8 +115,7 @@ export default class App extends Component<Props> {
               flexDirection: 'row',
               justifyContent: 'space-around',
             }}
-          >
-          </View>
+          />
           <View
             style={{
               backgroundColor: 'transparent',
@@ -135,7 +123,7 @@ export default class App extends Component<Props> {
               justifyContent: 'space-around',
             }}
           >
-            <TouchableOpacity onPress={this.toggle('canDetectText')} style={styles.flipButton}>
+            <TouchableOpacity onPress={this.toggleCanDetectText} style={styles.flipButton}>
               <Text style={styles.flipText}>
                 {!canDetectText ? 'Detect Text' : 'Detecting Text'}
               </Text>
@@ -149,8 +137,7 @@ export default class App extends Component<Props> {
             flexDirection: 'row',
             alignSelf: 'flex-end',
           }}
-        >
-        </View>
+        />
         <View
           style={{
             flex: 0.1,
@@ -169,14 +156,11 @@ export default class App extends Component<Props> {
         {!!canDetectText && this.renderTextBlocks()}
       </RNCamera>
     );
-  }
+  };
 
   private renderPhotoWithText = () => {
-    console.log('### Text in photo text render', this.state.textBlocks)
-    console.log('### Made it to photo text render' )
-    return this.renderTextBlocks()
-  }
-
+    return this.renderTextBlocks();
+  };
 }
 
 const styles = StyleSheet.create({

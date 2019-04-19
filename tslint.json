@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-consistent-codestyle",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "defaultSeverity": "error",
+  "linterOptions": {
+    "exclude": ["**/**.js", "**/**.jsx"]
+  },
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "rules": {
+    "const-parameters": true,
+    "no-floating-promises": { "severity": "warning" },
+    "early-exit": false,
+    "interface-name": false,
+    "interface-over-type-literal": true,
+    "jsx-no-lambda": false,
+    "member-access": false,
+    "member-ordering": false,
+    "no-accessor-recursion": true,
+    "no-collapsible-if": true,
+    "no-empty-interface": false,
+    "no-return-undefined": true,
+    "no-unnecessary-callback-wrapper": true,
+    "no-unnecessary-else": true,
+    "no-unused": true,
+    "no-namespace": true,
+    "no-var-before-return": [true, "allow-destructuring"],
+    "object-literal-sort-keys": false,
+    "object-shorthand-properties-first": true,
+    "ordered-imports": false,
+    "prefer-const-enum": true,
+    "prefer-object-spread": true,
+    "max-classes-per-file": false,
+    "prettier": { "severity": "warning" },
+  }
+}

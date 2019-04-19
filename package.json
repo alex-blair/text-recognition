@@ -17,11 +17,24 @@
     "babel-jest": "24.5.0",
     "jest": "24.5.0",
     "metro-react-native-babel-preset": "0.51.1",
+    "prettier": "1.16.4",
     "react-native-typescript-transformer": "^1.2.12",
     "react-test-renderer": "16.8.5",
+    "tslint": "5.15.0",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-consistent-codestyle": "1.13.3",
+    "tslint-plugin-prettier": "2.0.1",
+    "tslint-react": "3.6.0",
     "typescript": "^3.3.3"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "lint-staged": {
+    "*.ts?(x)": [
+      "tslint --fix",
+      "git add",
+      "yarn test-hook"
+    ]
   }
 }
